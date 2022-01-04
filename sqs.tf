@@ -84,13 +84,6 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
   function_name    = aws_lambda_function.lambda_sqs.arn
 }
 
-resource "aws_lambda_event_source_mapping" "dlq_mapping" {
-  batch_size       = 1
-  event_source_arn = aws_sqs_queue.dlqueue.arn
-  enabled          = true
-  function_name    = aws_lambda_function.lambda_sqs.arn
-}
-
 resource "aws_cloudwatch_metric_alarm" "deadletter_alarm" {
   alarm_name          = "${aws_sqs_queue.dlqueue.name}-not-empty-alarm"
   alarm_description   = "Items are on the ${aws_sqs_queue.dlqueue.name} queue"
