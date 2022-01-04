@@ -21,9 +21,12 @@ EOF
 }
 
 resource "aws_iam_role_policy" "read_policy" {
-  name   = "${var.name}-read-policy"
-  role   = aws_iam_role.firehose_role.id
-  policy = <<POLICY
+  name = "${var.name}-read-policy"
+
+  //description = "Policy to allow reading from the ${var.stream_name} stream"
+  role = aws_iam_role.firehose_role.id
+
+  policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -36,7 +39,8 @@ resource "aws_iam_role_policy" "read_policy" {
             ],
             "Resource": [
                 "arn:aws:kinesis:${var.region}:${data.aws_caller_identity.current.account_id}:stream/${aws_kinesis_stream.kinesis_stream.name}"
-            ],
+            ]
+        },
         {
           "Effect": "Allow",
           "Action": [
@@ -48,7 +52,7 @@ resource "aws_iam_role_policy" "read_policy" {
               "s3:PutObject"
           ],
           "Resource": [
-              "${var.s3_bucket_arn}",
+              "a${var.s3_bucket_arn}",
           ]
       },
       {
@@ -62,5 +66,5 @@ resource "aws_iam_role_policy" "read_policy" {
       }
 ]
 }
-POLICY
+EOF
 }
