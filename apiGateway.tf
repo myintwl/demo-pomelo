@@ -81,7 +81,7 @@ resource "aws_api_gateway_integration" "api" {
   type                    = "AWS"
   integration_http_method = "POST"
   credentials             = aws_iam_role.apiSQS.arn
-  uri                     = "arn:aws:apigateway:${var.region}:sqs:path/${aws_sqs_queue.queue.name}"
+  uri                     = "arn:aws:apigateway:${var.region}:sqs:path/${aws_sqs_queue.queue1.name}"
 
   request_parameters = {
     "integration.request.header.Content-Type" = "'application/x-www-form-urlencoded'"
