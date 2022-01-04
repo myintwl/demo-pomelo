@@ -28,17 +28,3 @@ resource "aws_lambda_permission" "allows_sqs_to_trigger_lambda" {
   principal     = "sqs.amazonaws.com"
   source_arn    = aws_sqs_queue.queue1.arn
 }
-
-resource "aws_lambda_function_event_invoke_config" "sqs" {
-  function_name = aws_lambda_function.lambda_sqs.function_name
-
-  destination_config {
-    on_failure {
-      destination = aws_sqs_queue.dlqueue.arn
-    }
-
-    on_success {
-      destination = aws_sqs_queue.queue1.arn
-    }
-  }
-}
