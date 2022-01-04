@@ -26,5 +26,13 @@ resource "aws_lambda_permission" "allows_sqs_to_trigger_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_sqs.function_name
   principal     = "sqs.amazonaws.com"
-  source_arn    = aws_sqs_queue.queue.arn
+  source_arn    = aws_sqs_queue.queue1.arn
+}
+
+resource "aws_lambda_permission" "allows_kinesis" {
+  statement_id  = "AllowExecutionToKinesis"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda_sqs.function_name
+  principal     = "kinesis.amazonaws.com"
+  source_arn    = aws_kinesis_stream.kinesis_stream.arn
 }

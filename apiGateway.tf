@@ -10,10 +10,10 @@ resource "aws_api_gateway_resource" "form_score" {
 }
 
 resource "aws_api_gateway_request_validator" "validator_query" {
-  name                        = "queryValidator"
-  rest_api_id                 = aws_api_gateway_rest_api.apiGateway.id
-  validate_request_body       = true
-  validate_request_parameters = true
+  name                  = "queryValidator"
+  rest_api_id           = aws_api_gateway_rest_api.apiGateway.id
+  validate_request_body = true
+  #validate_request_parameters = true
 }
 
 resource "aws_api_gateway_method" "method_form_score" {
@@ -28,7 +28,7 @@ resource "aws_api_gateway_method" "method_form_score" {
   }
   request_parameters = {
     "method.request.path.proxy"        = false
-    "method.request.querystring.unity" = true
+    "method.request.querystring.unity" = false
     # example of validation: the above requires this in query string
     # https://my-api/dev/form-score?unity=1
   }
@@ -44,15 +44,21 @@ resource "aws_api_gateway_model" "my_model" {
 
   schema = <<EOF
   {
-  "$schema" : "http://json-schema.org/draft-04/schema#",
-  "title" : "validateTheBody",
-  "type" : "object",
-  "properties" : {
-    "message" : { "type" : "string" }
-  },
-  "required" :["message"]
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "required": [ "id", "docs"],
+  "properties": {
+    "id": { "type": "string" },
+    "docs": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
   }
-  EOF
+}
+EOF
 }
 
 resource "aws_api_gateway_usage_plan" "myusageplan" {
@@ -81,7 +87,7 @@ resource "aws_api_gateway_integration" "api" {
   type                    = "AWS"
   integration_http_method = "POST"
   credentials             = aws_iam_role.apiSQS.arn
-  uri                     = "arn:aws:apigateway:${var.region}:sqs:path/${aws_sqs_queue.queue.name}"
+  uri                     = "arn:aws:apigateway:${var.region}:sqs:path/${aws_sqs_queue.queue1.name}"
 
   request_parameters = {
     "integration.request.header.Content-Type" = "'application/x-www-form-urlencoded'"
@@ -90,23 +96,7 @@ resource "aws_api_gateway_integration" "api" {
 
   # Request Template for passing Method, Body, QueryParameters and PathParams to SQS messages
   request_templates = {
-    "application/json" = <<EOF
-Action=SendMessage&MessageBody={
-  "method": "$context.httpMethod",
-  "body-json" : $input.json('$'),
-  "queryParams": {
-    #foreach($param in $input.params().querystring.keySet())
-    "$param": "$util.escapeJavaScript($input.params().querystring.get($param))" #if($foreach.hasNext),#end
-
-  #end
-  },
-  "pathParams": {
-    #foreach($param in $input.params().path.keySet())
-    "$param": "$util.escapeJavaScript($input.params().path.get($param))" #if($foreach.hasNext),#end
-    #end
-  }
-}"
-EOF
+    "application/json" = "Action=SendMessage&MessageBody=$input.body"
   }
 
   depends_on = [
