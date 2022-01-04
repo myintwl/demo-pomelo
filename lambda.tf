@@ -28,3 +28,11 @@ resource "aws_lambda_permission" "allows_sqs_to_trigger_lambda" {
   principal     = "sqs.amazonaws.com"
   source_arn    = aws_sqs_queue.queue1.arn
 }
+
+resource "aws_lambda_permission" "allows_dlq_to_trigger_lambda" {
+  statement_id  = "AllowExecutionFromSQS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda_sqs.function_name
+  principal     = "sqs.amazonaws.com"
+  source_arn    = aws_sqs_queue.dlqueue.arn
+}
