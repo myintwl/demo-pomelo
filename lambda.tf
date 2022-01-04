@@ -30,7 +30,7 @@ resource "aws_lambda_permission" "allows_sqs_to_trigger_lambda" {
 }
 
 resource "aws_lambda_permission" "allows_dlq_to_trigger_lambda" {
-  statement_id  = "AllowExecutionFromSQS"
+  statement_id  = "AllowExecutionFromDLQ"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_sqs.function_name
   principal     = "sqs.amazonaws.com"
