@@ -331,11 +331,3 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
 }
 ```
 
-## License
-This project is licensed under the *MIT License* - see LICENSE.md file for details
-
-## References & Acknowlegments
-
-- Special thanks to [Andrew Loesch GitHub Gist](https://gist.github.com/afloesch/dc7d8865eeb91100648330a46967be25)
-- https://www.terraform.io
-- https://medium.com/appetite-for-cloud-formation/setup-lambda-to-event-source-from-sqs-in-terraform-6187c5ac2df1
