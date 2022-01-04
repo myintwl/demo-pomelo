@@ -13,6 +13,32 @@ resource "aws_sqs_queue" "queue1" {
   }
 }
 
+## Create SQS Queue Policy
+resource "aws_sqs_queue_policy" "queue1" {
+  queue_url = aws_sqs_queue.queue1.id
+  policy    = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+      "sqs:ChangeMessageVisibility",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+      "sqs:GetQueueUrl",
+      "sqs:ListQueueTags",
+      "sqs:ReceiveMessage",
+      "sqs:SendMessage",
+      ]
+      "Resource": "${aws_sqs_queue.queue1.arn}"
+    }
+  ]
+}
+POLICY
+}
+
+
 resource "aws_sqs_queue" "dlqueue" {
   name                      = "dead-letter-queue"
   delay_seconds             = 0
@@ -25,6 +51,30 @@ resource "aws_sqs_queue" "dlqueue" {
   }
 }
 
+
+resource "aws_sqs_queue_policy" "dlq" {
+  queue_url = aws_sqs_queue.dlqueue.id
+  policy    = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+      "sqs:ChangeMessageVisibility",
+      "sqs:DeleteMessage",
+      "sqs:GetQueueAttributes",
+      "sqs:GetQueueUrl",
+      "sqs:ListQueueTags",
+      "sqs:ReceiveMessage",
+      "sqs:SendMessage",
+      ]
+      "Resource": "${aws_sqs_queue.dlqueue.arn}"
+    }
+  ]
+}
+POLICY
+}
 
 # Trigger lambda on message to SQS
 resource "aws_lambda_event_source_mapping" "event_source_mapping" {
