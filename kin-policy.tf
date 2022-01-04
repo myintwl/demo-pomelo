@@ -37,7 +37,7 @@ resource "aws_iam_role_policy" "read_policy" {
           "kinesis:GetRecords"
         ],
         "Resource" : [
-          "arn:aws:kinesis:${var.region}:${data.aws_caller_identity.current.account_id}:stream/${aws_kinesis_stream.kinesis_stream.name}"
+          "arn:aws:kinesis:*:*:*"
         ]
       },
       {
