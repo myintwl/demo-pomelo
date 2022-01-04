@@ -5,7 +5,8 @@
           "Action": [
               "sqs:DeleteMessage",
               "sqs:ReceiveMessage",
-              "sqs:GetQueueAttributes"
+              "sqs:GetQueueAttributes",
+              "sqs:SendMessage"
           ],
           "Resource": "${sqs_arn}",
           "Effect": "Allow"
