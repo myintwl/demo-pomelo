@@ -1,5 +1,5 @@
-resource "aws_sqs_queue" "queue" {
-  name                      = "apigateway-queue"
+resource "aws_sqs_queue" "queue1" {
+  name                      = "apigateway-queue1"
   delay_seconds             = 0
   max_message_size          = 262144
   message_retention_seconds = 86400
@@ -29,7 +29,7 @@ resource "aws_sqs_queue" "dlqueue" {
 # Trigger lambda on message to SQS
 resource "aws_lambda_event_source_mapping" "event_source_mapping" {
   batch_size       = 1
-  event_source_arn = aws_sqs_queue.queue.arn
+  event_source_arn = aws_sqs_queue.queue1.arn
   enabled          = true
   function_name    = aws_lambda_function.lambda_sqs.arn
 }
