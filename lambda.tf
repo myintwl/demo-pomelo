@@ -38,7 +38,7 @@ resource "aws_lambda_function_event_invoke_config" "sqs" {
     }
 
     on_success {
-      destination = aws_sns_topic.alarm.arn
+      destination = aws_sqs_queue.queue1.arn
     }
   }
 }
