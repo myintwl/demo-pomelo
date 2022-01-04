@@ -14,7 +14,7 @@ resource "aws_sqs_queue" "queue1" {
 }
 
 resource "aws_sqs_queue" "dlqueue" {
-  name                      = "dead letter queue"
+  name                      = "dead-letter-queue"
   delay_seconds             = 0
   max_message_size          = 262144
   message_retention_seconds = 86400
