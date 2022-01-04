@@ -65,7 +65,7 @@ variable "retention_period_kinesis" {
 variable "shard_level_metrics" {
   type        = list(string)
   description = "A list of shard-level CloudWatch metrics which can be enabled for the stream."
-  default     = []
+  default     = ["IncomingBytes", "OutgoingBytes"]
 }
 
 variable "s3_bucket_arn" {
