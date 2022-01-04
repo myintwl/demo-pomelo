@@ -1,13 +1,14 @@
 import json
 
+
 def lambda_handler(event, context):
-    for record in event['Records']:
-        payload = json.loads(record['body'])
 
-        value1 = payload['value1']
-        value2 = payload['value2']
+    response = {}
+    print(event)
 
-        value_sum = value1 + value2
-        print("the sum is %s" % value_sum)
-        
-    return "OK"
+    # Response Status
+    statusCode = 200
+    response["statusCode"] = statusCode
+    response["body"] = json.dumps(event)
+
+    return response
