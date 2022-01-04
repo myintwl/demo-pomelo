@@ -22,6 +22,27 @@ variable "lambda_name" {
   default     = "lambda"
 }
 
+variable "retention_period" {
+  description = "Time (in seconds) "
+  type        = number
+  default     = 86400
+}
+variable "receive_wait" {
+  description = "Time (in seconds)"
+  type        = number
+  default     = 10
+}
+
+variable "max_size" {
+  type    = number
+  default = 262144
+}
+
+variable "delay" {
+  type    = number
+  default = 0
+}
+
 variable "secret_key" {
   description = "secret key for AWS Account"
 }

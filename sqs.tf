@@ -1,9 +1,9 @@
 resource "aws_sqs_queue" "queue1" {
   name                      = "apigateway-queue1"
-  delay_seconds             = 0
-  max_message_size          = 262144
-  message_retention_seconds = 86400
-  receive_wait_time_seconds = 10
+  delay_seconds             = var.delay
+  max_message_size          = var.max_size
+  message_retention_seconds = var.retention_period
+  receive_wait_time_seconds = var.receive_wait
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.dlqueue.arn,
     maxReceiveCount     = 2
@@ -41,10 +41,10 @@ POLICY
 
 resource "aws_sqs_queue" "dlqueue" {
   name                      = "dead-letter-queue"
-  delay_seconds             = 0
-  max_message_size          = 262144
-  message_retention_seconds = 86400
-  receive_wait_time_seconds = 10
+  delay_seconds             = var.delay
+  max_message_size          = var.max_size
+  message_retention_seconds = var.retention_period
+  receive_wait_time_seconds = var.receive_wait
 
   tags = {
     Product = local.app_name
