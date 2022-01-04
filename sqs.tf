@@ -29,8 +29,8 @@ resource "aws_sqs_queue_policy" "queue1" {
       "sqs:GetQueueUrl",
       "sqs:ListQueueTags",
       "sqs:ReceiveMessage",
-      "sqs:SendMessage",
-      ]
+      "sqs:SendMessage"
+      ],
       "Resource": "${aws_sqs_queue.queue1.arn}"
     }
   ]
@@ -67,8 +67,8 @@ resource "aws_sqs_queue_policy" "dlq" {
       "sqs:GetQueueUrl",
       "sqs:ListQueueTags",
       "sqs:ReceiveMessage",
-      "sqs:SendMessage",
-      ]
+      "sqs:SendMessage"
+      ],
       "Resource": "${aws_sqs_queue.dlqueue.arn}"
     }
   ]
