@@ -97,7 +97,7 @@ resource "aws_cloudwatch_metric_alarm" "deadletter_alarm" {
   treat_missing_data  = "notBreaching"
   alarm_actions       = [aws_sns_topic.alarm.arn]
   dimensions = {
-    "QueueName" = aws_sqs_queue.dlqueue.name
+    "QueueName" = aws_sqs_queue.queue1.name
   }
 
   tags = {
