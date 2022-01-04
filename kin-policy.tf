@@ -26,7 +26,7 @@ resource "aws_iam_role_policy" "read_policy" {
   //description = "Policy to allow reading from the ${var.stream_name} stream"
   role = aws_iam_role.firehose_role.id
 
-  policy = <<EOF
+  policy = <<POLICY
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -66,5 +66,5 @@ resource "aws_iam_role_policy" "read_policy" {
       }
 ]
 }
-EOF
+POLICY
 }
