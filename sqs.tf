@@ -6,7 +6,7 @@ resource "aws_sqs_queue" "queue1" {
   receive_wait_time_seconds = 10
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.dlqueue.arn,
-    maxReceiveCount     = 3
+    maxReceiveCount     = 2
   })
   tags = {
     Product = local.app_name
