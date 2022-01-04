@@ -48,7 +48,7 @@ resource "aws_iam_role_policy" "read_policy" {
               "s3:PutObject"
           ],
           "Resource": [
-              "a${var.s3_bucket_arn}",
+              "${var.s3_bucket_arn}",
           ]
       },
       {
