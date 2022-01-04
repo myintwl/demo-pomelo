@@ -21,7 +21,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "read_policy" {
-  name = "${var.name}-read-policy"
+  name = aws_kinesis_stream.kinesis_stream.arn
 
   //description = "Policy to allow reading from the ${var.stream_name} stream"
   role = aws_iam_role.firehose_role.id
