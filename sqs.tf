@@ -85,8 +85,8 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "deadletter_alarm" {
-  alarm_name          = "${aws_sqs_queue.dlqueue.name}-not-empty-alarm"
-  alarm_description   = "Items are on the ${aws_sqs_queue.dlqueue.name} queue"
+  alarm_name          = "${aws_sqs_queue.queue1.name}-not-empty-alarm"
+  alarm_description   = "Items are on the ${aws_sqs_queue.queue1.name} queue"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
   metric_name         = "ApproximateNumberOfMessagesVisible"
