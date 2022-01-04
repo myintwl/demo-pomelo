@@ -53,6 +53,6 @@ resource "aws_kinesis_firehose_delivery_stream" "extended_s3_stream" {
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = "tf-test-bucket"
+  bucket = "max-pomelo-test"
   acl    = "private"
 }
