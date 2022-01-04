@@ -38,7 +38,7 @@ resource "aws_sqs_queue_policy" "queue1" {
 POLICY
 }
 
-
+# Create DLQ 
 resource "aws_sqs_queue" "dlqueue" {
   name                      = "dead-letter-queue"
   delay_seconds             = var.delay
@@ -51,7 +51,7 @@ resource "aws_sqs_queue" "dlqueue" {
   }
 }
 
-
+# IAM Policy for DLQ
 resource "aws_sqs_queue_policy" "dlq" {
   queue_url = aws_sqs_queue.dlqueue.id
   policy    = <<POLICY
@@ -84,9 +84,10 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
   function_name    = aws_lambda_function.lambda_sqs.arn
 }
 
+# Cloudwatch Alarm to keep track of DLQ
 resource "aws_cloudwatch_metric_alarm" "deadletter_alarm" {
-  alarm_name          = "${aws_sqs_queue.queue1.name}-not-empty-alarm"
-  alarm_description   = "Items are on the ${aws_sqs_queue.queue1.name} queue"
+  alarm_name          = "${aws_sqs_queue.dlqueue.name}-not-empty-alarm"
+  alarm_description   = "Items are on the ${aws_sqs_queue.dlqueue.name} queue"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 1
   metric_name         = "ApproximateNumberOfMessagesVisible"
@@ -97,7 +98,7 @@ resource "aws_cloudwatch_metric_alarm" "deadletter_alarm" {
   treat_missing_data  = "notBreaching"
   alarm_actions       = [aws_sns_topic.alarm.arn]
   dimensions = {
-    "QueueName" = aws_sqs_queue.queue1.name
+    "QueueName" = aws_sqs_queue.dlqueue.name
   }
 
   tags = {
@@ -105,6 +106,7 @@ resource "aws_cloudwatch_metric_alarm" "deadletter_alarm" {
   }
 }
 
+#SNS Topic to record DLQ
 resource "aws_sns_topic" "alarm" {
   name = "${local.app_name}-alarm-topic"
 }
