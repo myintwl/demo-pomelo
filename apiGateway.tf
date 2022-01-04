@@ -28,7 +28,7 @@ resource "aws_api_gateway_method" "method_form_score" {
   }
   request_parameters = {
     "method.request.path.proxy"        = false
-    "method.request.querystring.unity" = true
+    "method.request.querystring.unity" = false
     # example of validation: the above requires this in query string
     # https://my-api/dev/form-score?unity=1
   }
