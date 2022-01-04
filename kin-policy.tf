@@ -36,9 +36,7 @@ resource "aws_iam_role_policy" "read_policy" {
           "kinesis:GetShardIterator",
           "kinesis:GetRecords"
         ],
-        "Resource" : [
-          "arn:aws:kinesis:*:*:*"
-        ]
+        "Resource" : aws_kinesis_stream.kinesis_stream.arn,
       },
       {
         "Effect" : "Allow",
@@ -51,7 +49,7 @@ resource "aws_iam_role_policy" "read_policy" {
           "s3:PutObject"
         ],
         "Resource" : [
-          "a${var.s3_bucket_arn}",
+          "${var.s3_bucket_arn}",
         ]
       },
       {
