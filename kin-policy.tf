@@ -39,8 +39,7 @@ resource "aws_iam_role_policy" "read_policy" {
             ],
             "Resource": [
                 "arn:aws:kinesis:${var.region}:${data.aws_caller_identity.current.account_id}:stream/${aws_kinesis_stream.kinesis_stream.name}"
-            ]
-        },
+            ],
         {
           "Effect": "Allow",
           "Action": [
